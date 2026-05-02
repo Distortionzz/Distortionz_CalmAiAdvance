@@ -61,6 +61,13 @@ distortionz_calmaiadvance
 
 ## 🛠 Installation
 
+> ⚠️ **REQUIRED:** This script conflicts with `qbx_density` (which has its own basic AI calming layer). You must **stop or remove `qbx_density`** before using CalmAI Advanced, or the relationship overrides will be fought every frame.
+>
+> In your `server.cfg`, comment out or delete:
+> ```cfg
+> # ensure qbx_density
+> ```
+
 1. 📥 Drop the folder into your `resources/` folder
 2. ⚙️ Open `config.lua` and tune:
    - `Config.Modules` — toggle individual calm layers
