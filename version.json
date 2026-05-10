@@ -1,6 +1,6 @@
 {
-    "version": "1.0.0",
+    "version": "1.0.2",
     "name": "distortionz_calmaiadvance",
     "download": "https://github.com/Distortionzz/Distortionz_CalmAiAdvance",
-    "changelog": "v1.0.0 — Initial release. Disables worldwide AI ped aggression, animal hostility, gang shootouts, and road rage with toggleable modules. Three-layer pacification: world flags, relationship groups, and per-ped attribute overrides. Auto-restores hostile defaults on resource stop."
+    "changelog": "v1.0.2 — Added README.md with overview, features, dependencies, installation, and credits. Standardized GitHub repo metadata (badges, dynamic version pull, MIT license, Qbox required). v1.0.1 — Critical loop refactor + dead-code removal. FIXED: removed SetAmbientVehicleRangeMultiplierThisFrame(0.0) call from the main loop — it was a per-frame native called once per second, effectively dead code. CHANGED: split the main loop into two threads — bootstrap once + 30s safety re-apply for persistent natives, per-ped scan stays on its 1s cadence. v1.0.0 — Initial release. Disables worldwide AI ped aggression, animal hostility, gang shootouts, and road rage with toggleable modules."
 }

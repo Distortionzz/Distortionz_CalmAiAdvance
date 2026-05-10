@@ -70,14 +70,20 @@ local ANIMAL_GROUPS = {
 }
 
 -- ─── World-level pacification ───────────────────────────────────────
+-- These are PERSISTENT natives (set-and-forget). They were previously
+-- inside the per-second loop, which is wasteful and obscured intent.
+-- Now run once at boot + a 30s safety re-apply (in case another resource
+-- resets random cop spawning).
+--
+-- Removed: SetAmbientVehicleRangeMultiplierThisFrame(0.0). That's a
+-- ThisFrame native that needed a per-frame loop to function. Running it
+-- once per second made it dead code, AND it was misnamed (controls
+-- ambient *vehicle range*, not gunfire). qbx_density already manages
+-- ambient vehicle density correctly — calmai shouldn't fight it.
 
 local function ApplyWorldCalmFlags()
-    -- Disable scripted ambient combat / drive-bys
-    if Config.Modules.ambientGunfire then
-        SetAmbientVehicleRangeMultiplierThisFrame(0.0)
-    end
-
-    -- Disable scripted gang shootouts (gang members spawning + opening fire)
+    -- gangShootouts toggle disables ambient cop spawning by name; native
+    -- below is what actually does the suppression.
     if Config.Modules.gangShootouts then
         SetCreateRandomCops(false)
         SetCreateRandomCopsNotOnScenarios(false)
@@ -142,13 +148,27 @@ local function CalmPed(ped)
     end
 end
 
--- ─── Main calm loop ─────────────────────────────────────────────────
+-- ─── World-flag + relationship bootstrap (persistent — slow loop) ──
+-- Persistent natives only need to be set once. We run them at boot then
+-- re-apply every 30s as a safety net in case another resource resets
+-- relationships or cop spawning. Far cheaper than calling them per-second
+-- alongside the ped scan.
 
 CreateThread(function()
     while true do
         ApplyWorldCalmFlags()
         NeutralizeRelationships()
+        Wait(30000)
+    end
+end)
 
+-- ─── Per-ped calm loop ──────────────────────────────────────────────
+-- Iterates streamed peds within radius and applies attribute overrides.
+-- Intentionally on its own thread so the heavy ped scan doesn't drag
+-- the lightweight world flags above to the same cadence.
+
+CreateThread(function()
+    while true do
         local playerCoords = GetEntityCoords(PlayerPedId())
         local radius = Config.Tuning.radius
 

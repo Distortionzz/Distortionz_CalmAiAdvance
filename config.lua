@@ -2,7 +2,7 @@ Config = {}
 
 Config.Script = {
     name    = 'Distortionz CalmAI Advanced',
-    version = '1.0.0',
+    version = '1.0.2',
 }
 
 Config.Debug = false
@@ -54,4 +54,4 @@ Config.VersionCheck = {
     checkOnStart = true,
     url         = 'https://raw.githubusercontent.com/Distortionzz/Distortionz_CalmAiAdvance/main/version.json',
 }
-Config.CurrentVersion = '1.0.0'
+Config.CurrentVersion = '1.0.2'
