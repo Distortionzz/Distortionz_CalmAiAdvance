@@ -17,7 +17,8 @@ client_scripts {
 }
 
 server_scripts {
-    'version_check.lua'
+    'version_check.lua',
+    'server.lua'
 }
 
 dependencies {
